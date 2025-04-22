@@ -13,7 +13,7 @@ A Spring Boot REST API for parsing, storing, and managing SWIFT code data — co
   - `GET` all codes by country
   - `POST` new code
   - `DELETE` by code
-- ✅ Error handling (400, 404, 409)
+- ✅ Error handling
 - ✅ Unit + Integration tests with Testcontainers
 - ✅ Fully containerized with Docker & Docker Compose
 
@@ -44,7 +44,9 @@ A Spring Boot REST API for parsing, storing, and managing SWIFT code data — co
 ## 🐳 Run with Docker 
 # Clone the project
 git clone https://github.com/krawiec00/RemitlyHomeExercise
+
 Go to localization of the project
+
 # Start the app and database
 User command: docker-compose up --build
 
@@ -68,7 +70,11 @@ Remove a specific SWIFT code.
 POST /v1/swift-codes/upload
 
 Upload Excel .xlsx file and parse + save valid records.
+
 🧪 Tests
+
+Use command:
+
 ./mvnw test  
 
 Tests include:
@@ -81,10 +87,15 @@ Tests include:
 
 -  Run on real PostgreSQL DB via Testcontainers
 
+
+
 📁 Environment Variables
 Variable	Default
+
 SPRING_DATASOURCE_URL	jdbc:postgresql://localhost:5432/swift_db
+
 SPRING_DATASOURCE_USERNAME	swift_user
+
 SPRING_DATASOURCE_PASSWORD	swift_pass
 
 These can be overridden in docker-compose.yml.
