@@ -2,27 +2,29 @@
 services:
   postgresdb:
     image: postgres:15
+    container_name: postgres_container
     environment:
       POSTGRES_DB: swift_db
       POSTGRES_USER: swift_user
       POSTGRES_PASSWORD: swift_pass
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
     ports:
       - "5432:5432"
+    networks:
+      - swift-network
 
   app:
-    build:
-      context: .
+    build: .
+    container_name: swift_app
+    ports:
+      - "8080:8080"
     depends_on:
       - postgresdb
     environment:
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgresdb:5432/swift_db
       SPRING_DATASOURCE_USERNAME: swift_user
       SPRING_DATASOURCE_PASSWORD: swift_pass
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-    ports:
-      - "8080:8080"
+    networks:
+      - swift-network
 
-volumes:
-  postgres_data:
+networks:
+  swift-network:

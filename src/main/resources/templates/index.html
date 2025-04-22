@@ -27,18 +27,20 @@
         function addCode() {
             const dto = {
                 swiftCode: document.getElementById('new_swiftCode').value,
-                bankName:   document.getElementById('new_bankName').value,
-                address:    document.getElementById('new_address').value,
-                countryISO2:  document.getElementById('new_countryISO2').value,
-                countryName:  document.getElementById('new_countryName').value,
-                isHeadquarter: document.getElementById('new_isHQ').checked
+                bankName: document.getElementById('new_bankName').value,
+                address: document.getElementById('new_address').value,
+                countryISO2: document.getElementById('new_countryISO2').value,
+                countryName: document.getElementById('new_countryName').value,
+                isHeadquarter: document.getElementById('new_isHQ').value === 'true'
             };
+
             callApi('/v1/swift-codes', {
                 method: 'POST',
                 headers: {'Content-Type':'application/json'},
                 body: JSON.stringify(dto)
             });
         }
+
 
         // DELETE /v1/swift-codes/{code}
         function deleteCode() {
@@ -93,9 +95,11 @@
     <input id="new_address" placeholder="address"/><br/>
     <input id="new_countryISO2" placeholder="countryISO2"/><br/>
     <input id="new_countryName" placeholder="countryName"/><br/>
-    <label>
-        HQ? <input type="checkbox" id="new_isHQ"/>
-    </label><br/>
+    <label for="new_isHQ">Is Headquarter:</label>
+    <select id="new_isHQ">
+        <option value="true">True</option>
+        <option value="false">False</option>
+    </select><br/>
     <button onclick="addCode()">POST</button>
 </fieldset>
 

@@ -1,15 +1,20 @@
 package com.remitly.dto;
 
+import com.remitly.homeExercise.HomeExerciseApplicationTests;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
 import jakarta.validation.ValidatorFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.testcontainers.junit.jupiter.Testcontainers;
 
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
+
 
 class SwiftCodeRequestDTOTest {
 
