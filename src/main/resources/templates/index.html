@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8" />
+    <title>SWIFT Codes UI</title>
+    <script>
+        async function callApi(path, options={}) {
+            const res = await fetch(path, options);
+            const txt = await res.text();
+            document.getElementById('output').textContent =
+                res.ok ? txt : `ERROR ${res.status}: ${txt}`;
+        }
+
+        // GET /v1/swift-codes/{code}
+        function getByCode() {
+            const code = document.getElementById('inputCode').value;
+            callApi(`/v1/swift-codes/${code}`);
+        }
+
+        // GET /v1/swift-codes/country/{iso2}
+        function getByCountry() {
+            const c = document.getElementById('inputCountry').value;
+            callApi(`/v1/swift-codes/country/${c}`);
+        }
+
+        // POST /v1/swift-codes
+        function addCode() {
+            const dto = {
+                swiftCode: document.getElementById('new_swiftCode').value,
+                bankName:   document.getElementById('new_bankName').value,
+                address:    document.getElementById('new_address').value,
+                countryISO2:  document.getElementById('new_countryISO2').value,
+                countryName:  document.getElementById('new_countryName').value,
+                isHeadquarter: document.getElementById('new_isHQ').checked
+            };
+            callApi('/v1/swift-codes', {
+                method: 'POST',
+                headers: {'Content-Type':'application/json'},
+                body: JSON.stringify(dto)
+            });
+        }
+
+        // DELETE /v1/swift-codes/{code}
+        function deleteCode() {
+            const code = document.getElementById('delCode').value;
+            callApi(`/v1/swift-codes/${code}`, { method: 'DELETE' });
+        }
+
+        // POST /v1/swift-codes/upload
+        function uploadFile() {
+            const fileInput = document.getElementById('fileInput');
+            const form = new FormData();
+            form.append('file', fileInput.files[0]);
+            callApi('/v1/swift-codes/upload', { method: 'POST', body: form });
+        }
+
+        // GET /v1/swift-codes/print
+        function printAll() {
+            callApi('/v1/swift-codes/print');
+        }
+    </script>
+    <style>
+        body { font-family: sans-serif; padding: 1rem; }
+        fieldset { margin: .5rem 0; padding: .5rem; }
+        #output { white-space: pre-wrap; background:#f0f0f0; padding:.5rem; margin-top:1rem; }
+    </style>
+</head>
+<body>
+<h1>SWIFT Codes UI</h1>
+
+
+<fieldset>
+    <legend>1. Upload excel file</legend>
+    <input type="file" id="fileInput" accept=".xlsx"/><br/>
+    <button onclick="uploadFile()">UPLOAD</button>
+</fieldset>
+<fieldset>
+    <legend>2. Search by Swift Code</legend>
+    <input id="inputCode" placeholder="Ex. BCHICLRMIMP"/>
+    <button onclick="getByCode()">GET</button>
+</fieldset>
+
+<fieldset>
+    <legend>3. Search by country</legend>
+    <input id="inputCountry" placeholder="Ex. PL"/>
+    <button onclick="getByCountry()">GET</button>
+</fieldset>
+
+<fieldset>
+    <legend>4. Add new Swift code</legend>
+    <input id="new_swiftCode" placeholder="swiftCode"/><br/>
+    <input id="new_bankName" placeholder="bankName"/><br/>
+    <input id="new_address" placeholder="address"/><br/>
+    <input id="new_countryISO2" placeholder="countryISO2"/><br/>
+    <input id="new_countryName" placeholder="countryName"/><br/>
+    <label>
+        HQ? <input type="checkbox" id="new_isHQ"/>
+    </label><br/>
+    <button onclick="addCode()">POST</button>
+</fieldset>
+
+<fieldset>
+    <legend>5. Delete code</legend>
+    <input id="delCode" placeholder="swiftCode"/>
+    <button onclick="deleteCode()">DELETE</button>
+</fieldset>
+
+<fieldset>
+    <legend>6. Write all</legend>
+    <button onclick="printAll()">PRINT ALL</button>
+</fieldset>
+
+<pre id="output"></pre>
+</body>
+</html>
